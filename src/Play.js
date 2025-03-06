@@ -20,6 +20,9 @@ class Play extends Phaser.Scene {
         this.bombCount = 0;
         this.bombVelocity = 200;
 
+        //enemy
+        this.enemyRange = 100
+
     }
 
     preload() {
@@ -62,10 +65,13 @@ class Play extends Phaser.Scene {
 
         //add item
 
-        this.item = this.add.sprite(width, height - height/ 4 - 100, "fire")
+        this.item = this.physics.add.sprite(width, height - height/ 4 - 100, "fire")
         
 
-
+        //enemy
+        this.enemy = this.physics.add.sprite(width - 100, height - height/4 - 50, "enemy").setVelocityX(-this.moveSpeed * 100);
+        this.pointA = this.enemy.x
+        this.pointB = this.enemy.x + this.enemyRange
 
 
         //temp character body
@@ -82,7 +88,11 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.body, this.grounds);
 
 
-
+        this.physics.add.collider(this.body, this.item, (body, item) => {
+            item.destroy();
+            this.bombCount += 1
+            
+        });
         
 
         
@@ -126,7 +136,14 @@ class Play extends Phaser.Scene {
             height - (height * 9) / 10,
             this.score,
             timeConfig
-        );
+        ).setScrollFactor(0);
+
+        this.bombCountText = this.add.text(
+            width - width/4,
+            height - (height * 9) / 10,
+            this.bombCount,
+            timeConfig
+        ).setScrollFactor(0);
         
         
         this.cameras.main.setBounds(0,0, this.background.widthInPixels, this.background.heightInPixels)
@@ -158,7 +175,7 @@ class Play extends Phaser.Scene {
             }
         };
 
-        if (keyAttack.isDown && this.canShoot){
+        if (keyAttack.isDown && this.canShoot && this.bombCount > 0){
             if (this.body.flipX){
                 this.bombVelocity = -200
             }
@@ -168,6 +185,7 @@ class Play extends Phaser.Scene {
             this.physics.add.sprite(this.body.x, this.body.y - 10, "fire").setVelocityX(this.bombVelocity);
             this.canShoot = false;
             this.clock = this.time.delayedCall(this.timer, setShoot, null, this);
+            this.bombCount -= 1;
         }
 
         if (!this.body.body.touching.down){
@@ -208,11 +226,22 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
+        //enemyMovement
+        // if (this.enemy.x < this.pointB){
+        //     this.enemy.x += 1
+        // }
+
+        if (this.enemy.x < this.pointA && this.enemy.body.velocity.x < 0) {
+            this.enemy.setVelocityX(-this.moveSpeed * 100);
+          } else if (this.enemy.x > this.pointB && this.enemy.body.velocity.x > 0) {
+            this.enemy.setVelocityX(this.moveSpeed * 100);
+        }
         
 
 
         // this.score += 1;
         // this.timeLeft.text = this.score;
+        this.bombCountText.text = this.bombCount
 
         if(this.body.y + 100 > game.config.height){
             this.scene.restart();
