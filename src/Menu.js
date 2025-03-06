@@ -5,10 +5,10 @@ class Menu extends Phaser.Scene {
 
     preload(){
         this.load.path = "./assets/img/";
-        this.load.image("cup", "fire.png");
-        this.load.image("ball", "Platform.png");
+        this.load.image("fire", "fire.png");
+        this.load.image("ground", "Platform.png");
         this.load.image("wall", "Platform.png");
-        //this.load.image("oneway", "one_way_wall.png");
+        this.load.image("title", "GuardiansTitle.png");
         this.load.image("bgWar", "bgWar.png");
         this.load.image("bgPlay", "bgPlay.png");
 
@@ -30,7 +30,7 @@ class Menu extends Phaser.Scene {
         let menuConfig = {
             fontFamily: "Courier",
             fontSize: "24px",
-            backgroundColor: "red",
+            backgroundColor: "lightgreen",
             color: "black",
             align: "right",
             padding: {
@@ -43,7 +43,7 @@ class Menu extends Phaser.Scene {
         let menu2Config = {
             fontFamily: "Courier",
             fontSize: "15px",
-            backgroundColor: "red",
+            backgroundColor: "lightgreen",
             color: "black",
             align: "right",
             padding: {
@@ -53,13 +53,13 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0,
         };
 
-        this.background = this.add.image(0, 0, "bgWar").setOrigin(0);
+        this.background = this.add.image(0, 0, "title").setOrigin(0);
 
         this.add
             .text(
                 game.config.width / 2,
                 game.config.height / 2,
-                "Warzone Escape",
+                "Guardians of Sunshine",
                 menuConfig
             )
             .setOrigin(0.5);

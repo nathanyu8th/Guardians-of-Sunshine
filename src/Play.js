@@ -8,37 +8,21 @@ class Play extends Phaser.Scene {
         this.moveSpeed = -1;
         this.jumpPower = 0;
         this.gravityForce = 500;
-        this.jumps = 2;
-        this.spawnRange = [50, 150];
-        this.platformRange = [10, 200];
 
-        this.gameTimer = 10000;
+        this.gameTimer = 1000;
+        this.canShoot = true;
 
         this.score = 0;
 
         this.platformVelocity = -100;
         this.trapTimer = 5000;
 
-        this.fallingTrap;
-        this.fallingTrap2;
-        this.fallingTrap3;
+        this.bombCount = 0;
+        this.bombVelocity = 200;
+
     }
 
-    preload() {}
-
-    create() {
-
-        //background music
-        this.music = this.sound.add("bgMusic", { loop: true });
-        this.music.play();
-
-
-        // add background grass
-        //this.background = this.add.image(0, 0, "bgPlay").setOrigin(0);
-
-        this.background = this.add.tileSprite(0,0, game.config.width, game.config.height, "bgPlay").setOrigin(0, 0);
-
-        //add character
+    preload() {
         //animations
         this.anims.create({
             key: "idle",
@@ -62,6 +46,24 @@ class Play extends Phaser.Scene {
             frameRate: 8,
             repeat: -1
         })
+    }
+
+    create() {
+
+        //background music
+        this.music = this.sound.add("bgMusic", { loop: true });
+        this.music.play();
+
+
+        // add background grass
+        //this.background = this.add.image(0, 0, "bgPlay").setOrigin(0);
+
+        this.background = this.add.tileSprite(0,0, game.config.width, game.config.height, "bgPlay").setOrigin(0, 0);
+
+        //add item
+
+        this.item = this.add.sprite(width, height - height/ 4 - 100, "fire")
+        
 
 
 
@@ -70,28 +72,20 @@ class Play extends Phaser.Scene {
         this.body = this.physics.add.sprite(width / 2, height / 4, "character").setOrigin(0).setCollideWorldBounds(true);
         this.body.setGravityY(this.gravityForce);
 
+        //ground
+        this.ground = this.physics.add.sprite(width/2, height - height/4, "ground").setImmovable();
+        this.ground2 = this.physics.add.sprite(width - width/4, height - height/4, "ground").setImmovable();
+        this.ground3 = this.physics.add.sprite(width, height - height/4, "ground").setImmovable();
+        this.ground4 = this.physics.add.sprite(width + width/4, height - height/4, "ground").setImmovable();
+        
+        this.grounds = this.add.group([this.ground, this.ground2, this.ground3, this.ground4])
+        this.physics.add.collider(this.body, this.grounds);
 
 
-        this.platformGroup = this.add.group({
-            removeCallback: function (platform) {
-                platform.scene.platformBag.add(platform);
-            },
-        });
 
-        this.platformBag = this.add.group({
-            removeCallback: function (platform) {
-                platform.scene.platformGroup.add(platform);
-            },
-        });
+        
 
-        //this.playerJumps = 0;
-
-        this.addPlatform(game.config.width / 4, game.config.width / 2);
-        this.addPlatform(
-            game.config.width / 5,
-            game.config.width - this.game.config.width / 4
-        );
-        //this.addPlatform2(game.config.width / 5, game.config.width / 2);
+        
 
         keyLeft = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.LEFT
@@ -100,13 +94,17 @@ class Play extends Phaser.Scene {
             Phaser.Input.Keyboard.KeyCodes.RIGHT
         );
 
-        keyJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        keyJump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
         keyQuit = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.Q
         );
 
-        this.physics.add.collider(this.body, this.platformGroup);
+        keyAttack = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.X
+        );
+
+        
 
         //UI Creation
 
@@ -130,88 +128,26 @@ class Play extends Phaser.Scene {
             timeConfig
         );
         
-        const updatePlatforms = () => {
-                this.platformVelocity -= 50;
-                this.platformGroup.getChildren().forEach((platform) => {
-                    platform.setVelocityX(this.platformVelocity);
-                    //platform.displayWidth /= 2;
-                });
-                this.platformBag.getChildren().forEach((platform) => {
-                    platform.setVelocityX(this.platformVelocity);
-                    //platform.displayWidth /= 2;
-                });
-                this.clock = this.time.delayedCall(this.timer, updatePlatforms, null, this);
-                //console.log("works");
-        }
-        this.timer = this.gameTimer;
-        this.clock = this.time.delayedCall(
-            this.timer,
-            () => {
-                console.log("help")
-                updatePlatforms();
-                
-
-            },
-            null,
-            this
-        );
-
-    const addProjectiles = () => {
-        this.fallingTrap = this.physics.add.sprite(Phaser.Math.Between(0,width), 0, "cup").setGravityY(this.gravityForce);
-        this.fallingTrap2 = this.physics.add.sprite(Phaser.Math.Between(0,width), 0, "cup").setGravityY(this.gravityForce);
-        this.fallingTrap3 = this.physics.add.sprite(Phaser.Math.Between(0,width), 0, "cup").setGravityY(this.gravityForce);
-
-        this.sound.play("trapEffect");
         
-        this.clock = this.time.delayedCall(this.timer2, addProjectiles, null, this);
-        //console.log("works");
-        this.traps = this.add.group([this.fallingTrap, this.fallingTrap2, this.fallingTrap3]);
-        this.physics.add.collider(this.body, this.traps, (body, traps) => {
-            this.scene.restart();
-            
-        });
-        
-    }
+        this.cameras.main.setBounds(0,0, this.background.widthInPixels, this.background.heightInPixels)
+        this.cameras.main.startFollow(this.body, true, 1, 1)
+        this.physics.world.setBounds(0, 0, this.background.widthInPixels, this.background.heightInPixels)
+    
 
     //this.traps = this.add.group([this.fallingTrap, this.fallingTrap2, this.fallingTrap3]);
     
 
-    this.timer2 = this.trapTimer;
-    this.clock = this.time.delayedCall(
-        this.timer2,
-        () => {
-            console.log("trap")
-            addProjectiles();
-        },
-        null,
-        this
-    );
-
     }
 
-    addPlatform(platformWidth, posX) {
-        let platform;
-
-        if (this.platformBag.getLength()) {
-            platform = this.platformBag.getFirst();
-            platform.x = posX;
-            platform.active = true;
-            platform.visible = true;
-            this.platformBag.remove(platform);
-        } else {
-            platform = this.physics.add.sprite(posX, height / 2, "wall");
-            platform.setImmovable(true);
-            platform.setVelocityX(this.platformVelocity);
-            this.platformGroup.add(platform);
-        }
-        platform.displayWidth = platformWidth;
-        this.nextPlatformDistance = Phaser.Math.Between(
-            this.spawnRange[0],
-            this.spawnRange[1]
-        );
-    }
+    
 
     update() {
+
+
+        function setShoot(){
+            this.canShoot = true;
+        }
+        this.timer = this.gameTimer;
 
         let jump = () => {
             if (this.body.body.touching.down) {
@@ -221,6 +157,18 @@ class Play extends Phaser.Scene {
                 
             }
         };
+
+        if (keyAttack.isDown && this.canShoot){
+            if (this.body.flipX){
+                this.bombVelocity = -200
+            }
+            else{
+                this.bombVelocity = 200
+            }
+            this.physics.add.sprite(this.body.x, this.body.y - 10, "fire").setVelocityX(this.bombVelocity);
+            this.canShoot = false;
+            this.clock = this.time.delayedCall(this.timer, setShoot, null, this);
+        }
 
         if (!this.body.body.touching.down){
             this.body.anims.stop()
@@ -248,7 +196,7 @@ class Play extends Phaser.Scene {
         }
 
         //moving background
-        this.background.tilePositionX += 1;
+        //this.background.tilePositionX += 1;
 
         
 
@@ -260,39 +208,17 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
-        //reusing platforms
-        var minDist = width;
-        this.platformGroup.getChildren().forEach(function (platform) {
-            let platformDist = width - platform.x - platform.displayWidth / 2;
+        
 
-            minDist = Math.min(minDist, platformDist);
-            if (platform.x < -platform.displayWidth / 2) {
-                this.platformGroup.killAndHide(platform);
-                this.platformGroup.remove(platform);
-            }
-        }, this);
 
-        if (minDist > this.nextPlatformDistance) {
-            var nextPlatformWidth = Phaser.Math.Between(
-                this.platformRange[0],
-                this.platformRange[1]
-            );
-            this.addPlatform(
-                nextPlatformWidth,
-                game.config.width + nextPlatformWidth / 2
-            );
-            //this.addPlatform2(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
-        }
-
-        this.score += 1;
-        this.timeLeft.text = this.score;
+        // this.score += 1;
+        // this.timeLeft.text = this.score;
 
         if(this.body.y + 100 > game.config.height){
             this.scene.restart();
         }
 
-        // if (this.fallingTrap.y + 100 > game.config.height){
-        //     this.fallingTrap.destroy();
-        // }
+        //colliders
+
     }
 }
