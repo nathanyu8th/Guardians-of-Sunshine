@@ -15,6 +15,7 @@ class Menu extends Phaser.Scene {
         this.load.image("background", "background.png");
         this.load.image("mainCharacter", "character.png");
         this.load.image("flag", "EndFlag.png");
+        this.load.image("coin", "Coin.png")
 
         this.load.spritesheet("character", "characterAnim.png", {
             frameWidth: 32,
@@ -72,7 +73,7 @@ class Menu extends Phaser.Scene {
             .text(
                 game.config.width / 2,
                 game.config.height  - this.game.config.height /4,
-                "Press P to Start Playing, Press W to Jump, Press Q to Quit",
+                "Press P to Start, Press Z to Jump, Press Q to Quit, Press X to Shoot Bombs",
                 menuConfig
             )
             .setOrigin(0.5);
