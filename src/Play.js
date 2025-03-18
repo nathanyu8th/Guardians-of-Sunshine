@@ -23,6 +23,7 @@ class Play extends Phaser.Scene {
 
         //enemy
         this.enemyRange = 200
+        this.clock = 0
 
         
  
@@ -69,6 +70,8 @@ class Play extends Phaser.Scene {
         //this.background = this.add.tileSprite(0,0, game.config.width, game.config.height, "bgPlay").setOrigin(0, 0);
         this.background = this.physics.add.sprite(0,0, "background").setOrigin(0, 0);
         this.background = this.physics.add.sprite(2388,0, "background").setOrigin(0, 0);
+        this.background = this.physics.add.sprite(20,game.config.height - 10, "background").setOrigin(0, 0).setFlipY(true);
+        this.background = this.physics.add.sprite(2408,game.config.height - 10, "background").setOrigin(0, 0).setFlipY(true);
 
         //add item
 
@@ -98,7 +101,7 @@ class Play extends Phaser.Scene {
         this.body.setGravityY(this.gravityForce);
 
         //ground
-        this.ground = this.physics.add.sprite(width/4, height - height/4, "ground").setImmovable().setScale(4, 7)
+        this.ground = this.physics.add.sprite(width/4, height - height/6, "ground").setImmovable().setScale(4, 7)
         this.ground2 = this.physics.add.sprite(width - 207, height, "ground").setImmovable().setScale(4,7)
         this.ground3 = this.physics.add.sprite(width * 5 / 4, height - height/4, "ground").setImmovable()
         this.ground4 = this.physics.add.sprite(width * 3 / 2 + 100, height - height/4, "ground").setImmovable()
@@ -174,6 +177,13 @@ class Play extends Phaser.Scene {
             },
             //fixedWidth: 100,
         };
+
+        this.attackLeft = this.add.text(
+            width / 4 - 200,
+            height - (height * 9) / 10,
+            this.score,
+            timeConfig
+        ).setScrollFactor(0);
 
         this.timeLeft = this.add.text(
             width / 2,
@@ -342,7 +352,15 @@ class Play extends Phaser.Scene {
         this.timeLeft.text = this.score;
         this.bombCountText.text = "Bomb Count: " + this.bombCount
 
-        if(this.body.y + 100 > game.config.height + 100){
+        if (this.canShoot){
+            this.attackLeft.text = "Cooldown: 0ms"
+        }
+        else{
+            this.attackLeft.text = "Cooldown: " + (100 - this.clock.elapsed / 10).toFixed(0) + "ms"
+            //console.log(this.clock)
+        }
+
+        if(this.body.y > game.config.height * 3 / 2){
             this.music.stop();
             this.scene.restart();
         }

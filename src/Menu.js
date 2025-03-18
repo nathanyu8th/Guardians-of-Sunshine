@@ -5,22 +5,22 @@ class Menu extends Phaser.Scene {
 
     preload(){
         this.load.path = "./assets/img/";
-        this.load.image("fire", "fire.png");
+        //this.load.image("fire", "fire.png");
         this.load.image("bomb", "bomb.png");
         this.load.image("enemy", "enemy.png")
         this.load.image("ground", "GreenPlatform.png");
-        this.load.image("wall", "Platform.png");
+        //this.load.image("wall", "Platform.png");
         this.load.image("title", "GuardiansTitle.png");
-        this.load.image("bgWar", "bgWar.png");
+        //this.load.image("bgWar", "bgWar.png");
         this.load.image("background", "background.png");
         this.load.image("mainCharacter", "character.png");
         this.load.image("flag", "EndFlag.png");
         this.load.image("coin", "Coin.png")
 
-        this.load.spritesheet("character", "characterAnim.png", {
-            frameWidth: 32,
-            frameHeight: 32
-        })
+        // this.load.spritesheet("character", "characterAnim.png", {
+        //     frameWidth: 32,
+        //     frameHeight: 32
+        // })
 
         //sfx for jumping, background music, traps spawning in, play button
 
