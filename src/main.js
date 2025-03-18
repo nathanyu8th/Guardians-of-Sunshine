@@ -25,6 +25,7 @@ let config = {
             //debug: true
         }
     },
+    pixelArt: true,
     scene: [ Menu, Play ]
 }
 

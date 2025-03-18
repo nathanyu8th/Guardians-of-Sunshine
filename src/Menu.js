@@ -7,7 +7,9 @@ class Menu extends Phaser.Scene {
         this.load.path = "./assets/img/";
         //this.load.image("fire", "fire.png");
         this.load.image("bomb", "bomb.png");
+        this.load.image("bullet", "Bullet.png");
         this.load.image("enemy", "enemy.png")
+        this.load.image("boss", "Boss.png")
         this.load.image("ground", "GreenPlatform.png");
         //this.load.image("wall", "Platform.png");
         this.load.image("title", "GuardiansTitle.png");
@@ -17,10 +19,10 @@ class Menu extends Phaser.Scene {
         this.load.image("flag", "EndFlag.png");
         this.load.image("coin", "Coin.png")
 
-        // this.load.spritesheet("character", "characterAnim.png", {
-        //     frameWidth: 32,
-        //     frameHeight: 32
-        // })
+        this.load.spritesheet("character", "CharacterAnim.png", {
+            frameWidth: 64,
+            frameHeight: 64
+        })
 
         //sfx for jumping, background music, traps spawning in, play button
 

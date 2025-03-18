@@ -5,7 +5,7 @@ class Play extends Phaser.Scene {
 
     init() {
         // useful variables
-        this.moveSpeed = -2;
+        this.moveSpeed = -5;
         this.enemySpeed = -1.5;
         this.jumpPower = 0;
         this.gravityForce = 1200;
@@ -25,35 +25,15 @@ class Play extends Phaser.Scene {
         this.enemyRange = 200
         this.clock = 0
 
+        this.bossHealth = 3
+
         
  
 
     }
 
     preload() {
-        //animations
-        // this.anims.create({
-        //     key: "idle",
-        //     frames: [{key: "character", frame: 0}],
-        //     frameRate: 8,
-        //     repeat: -1
-        // })
-
-        // this.anims.create({
-        //     key: "walk",
-        //     frames: this.anims.generateFrameNumbers("character", { start: 0, end: 2 }),
-        //     frameRate: 8,
-        //     repeat: -1
-        // })
-
-        // this.anims.create({
-        //     key: "jump",
-        //     frames: this.anims.generateFrameNumbers("character", {
-        //         frames: [0, 3, 4]
-        //     }),
-        //     frameRate: 8,
-        //     repeat: -1
-        // })
+        
         
     }
 
@@ -73,13 +53,15 @@ class Play extends Phaser.Scene {
         this.background = this.physics.add.sprite(20,game.config.height - 10, "background").setOrigin(0, 0).setFlipY(true);
         this.background = this.physics.add.sprite(2408,game.config.height - 10, "background").setOrigin(0, 0).setFlipY(true);
 
+
         //add item
 
-        this.item4 = this.physics.add.sprite(width / 2, height - height/ 4 - 200, "bomb").setScale(0.5)
-        this.item1 = this.physics.add.sprite(width - width / 4, height - height/ 4, "bomb").setScale(0.5)
-        //this.item2 = this.physics.add.sprite(width * 2, height - height/ 4, "bomb").setScale(0.5)
+        this.item4 = this.physics.add.sprite(width / 2, height - height/ 4 - 100, "bomb").setScale(0.5)
+        this.item1 = this.physics.add.sprite(width - width / 4, height - height/ 4 + 50, "bomb").setScale(0.5)
+        this.item2 = this.physics.add.sprite(width, height * 3 / 2 - 50, "bomb").setScale(0.5)
         this.item3 = this.physics.add.sprite(width * 3 / 2 - 50, height - height/2, "bomb").setScale(0.5)
-        this.items = this.add.group([this.item1, this.item3, this.item4]);
+        this.item5 = this.physics.add.sprite(width + 100, height * 3 / 2 - 50, "bomb").setScale(0.5)
+        this.items = this.add.group([this.item1, this.item2, this.item3, this.item4, this.item5]);
         
 
         //enemy
@@ -92,8 +74,11 @@ class Play extends Phaser.Scene {
         this.enemy3 = this.physics.add.sprite(width * 5 / 2, height - height/5, "enemy").setVelocityX(-this.moveSpeed * 100);
         this.pointA3 = this.enemy3.x
         this.pointB3 = this.enemy3.x + this.enemyRange
+        this.enemy4 = this.physics.add.sprite(width * 3 / 2 + 100, height * 3 / 2 - 50, "enemy").setVelocityX(-this.moveSpeed * 100);
+        this.pointA4 = this.enemy4.x
+        this.pointB4 = this.enemy4.x + this.enemyRange
 
-        this.enemies = this.add.group([this.enemy, this.enemy2, this.enemy3])
+        this.enemies = this.add.group([this.enemy, this.enemy2, this.enemy3, this.enemy4])
 
 
         //temp character body
@@ -111,10 +96,14 @@ class Play extends Phaser.Scene {
         this.ground8 = this.physics.add.sprite(width * 2 + 300, height - height / 4, "ground").setImmovable().setScale(0.5, 1)
         this.ground9 = this.physics.add.sprite(width * 2 , height / 4 - 50, "ground").setImmovable().setScale(20, 9).setFlipY(true)
         this.ground10 = this.physics.add.sprite(width * 3 , height , "ground").setImmovable().setScale(8, 7)
+        this.ground11 = this.physics.add.sprite(width * 3 / 2 , height * 3 / 2 , "ground").setImmovable().setScale(7, 1)
+
         
-        this.grounds = this.add.group([this.ground, this.ground2, this.ground3, this.ground4, this.ground5, this.ground6, this.ground7, this.ground8, this.ground9, this.ground10])
+        this.grounds = this.add.group([this.ground, this.ground2, this.ground3, this.ground4, this.ground5, this.ground6, this.ground7,
+             this.ground8, this.ground9, this.ground10, this.ground11])
         this.physics.add.collider(this.body, this.grounds);
 
+        
 
         this.physics.add.overlap(this.body, this.items, (body, item) => {
             item.destroy();
@@ -122,9 +111,12 @@ class Play extends Phaser.Scene {
             
         });
 
-        this.coin = this.physics.add.sprite(width, height - height/4, "coin").setImmovable().setScale(0.5)
+        this.coin = this.physics.add.sprite(width * 3 / 5, height - height/4 + 50, "coin").setImmovable().setScale(0.5)
+        this.coin2 = this.physics.add.sprite(width * 3 / 5 + 50, height - height/4 + 50, "coin").setImmovable().setScale(0.5)
+        this.coin3 = this.physics.add.sprite(width * 3 / 5 + 100, height - height/4 + 50, "coin").setImmovable().setScale(0.5)
+        this.coin4 = this.physics.add.sprite(width * 3 / 5 + 150, height - height/4 + 50, "coin").setImmovable().setScale(0.5)
 
-        this.coins = this.add.group([this.coin])
+        this.coins = this.add.group([this.coin, this.coin2, this.coin3, this.coin4])
 
         this.physics.add.overlap(this.body, this.coins, (body, coin) => {
             coin.destroy();
@@ -140,8 +132,14 @@ class Play extends Phaser.Scene {
             emitter.explode(16);
 
         } )
-        
 
+
+        //teleporter
+        this.teleport = this.physics.add.sprite(width * 2, height * 3 / 2 - 50, "bomb").setImmovable()
+        
+        this.physics.add.collider(this.body, this.teleport, (body, teleport) => {
+            this.body.y -= height - 50;
+        })
         
 
         keyLeft = this.input.keyboard.addKey(
@@ -160,6 +158,30 @@ class Play extends Phaser.Scene {
         keyAttack = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.X
         );
+
+        //animations
+        this.anims.create({
+            key: "idle",
+            frames: this.anims.generateFrameNumbers("character", { start: 0, end: 2 }),
+            frameRate: 4,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: "walk",
+            frames: this.anims.generateFrameNumbers("character", { start: 3, end: 4 }),
+            frameRate: 4,
+            repeat: 0
+        })
+
+        this.anims.create({
+            key: "jump",
+            frames: this.anims.generateFrameNumbers("character", {
+                frames: [3, 4, 5]
+            }),
+            frameRate: 8,
+            repeat: 0
+        })
 
         
 
@@ -203,10 +225,43 @@ class Play extends Phaser.Scene {
         this.cameras.main.setBounds(0,0, this.background.widthInPixels, this.background.heightInPixels)
         this.cameras.main.startFollow(this.body, true, 1, 1)
         this.physics.world.setBounds(0, 0, this.background.widthInPixels, this.background.heightInPixels)
+
+        //boss
+        this.boss = this.physics.add.sprite(width * 3, height - height/4 + 20, "boss").setImmovable().setScale(3)
+
+        this.physics.add.collider(this.body, this.boss, (body, boss) => {
+            this.music.stop();
+            this.scene.restart();
+            
+        });
+
+        //enemy bullets
+        this.bullets = this.physics.add.group({
+            defaultKey: "bullet",
+            maxSize: 10
+        });
+
+        this.physics.add.collider(this.body, this.bullets, (body, bullet) => {
+            this.music.stop();
+            this.scene.restart();
+            
+        });
+        // this.physics.add.overlap(this.bullets, this.grounds, (bullet, ground) => {
+        //     bullet.destroy();
+        // });
+
+        
+
+        this.time.addEvent({
+            delay: 3000,
+            callback: this.bossShoot,
+            callbackScope: this,
+            loop: true
+        });
     
 
         //create ending
-        this.endFlag = this.physics.add.sprite(width * 3, height - height/4, "flag").setImmovable().setScale(3)
+        //this.endFlag = this.physics.add.sprite(width * 3, height - height/4, "flag").setImmovable().setScale(3)
     
         this.physics.add.collider(this.body, this.endFlag, (body, flag) => {
             this.music.stop();
@@ -214,6 +269,20 @@ class Play extends Phaser.Scene {
             
         });
 
+        
+    }
+
+    bossShoot(){
+        if (this.bossHealth > 0){
+            let bullet = this.bullets.get(this.boss.x, this.boss.y, "bullet").setScale(2);
+            let angle = Phaser.Math.Angle.Between(this.boss.x, this.boss.y, this.body.x, this.body.y);
+            let speed = 300;
+
+            bullet.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
+
+            // Destroy bullet after some time
+            this.time.delayedCall(3000, () => bullet.destroy());
+        }
         
     }
 
@@ -226,17 +295,19 @@ class Play extends Phaser.Scene {
             this.canShoot = true;
         }
         this.timer = this.gameTimer;
+        
 
         let jump = () => {
             if (this.body.body.touching.down) {
                 this.body.setVelocityY(-600);
-                //this.body.anims.play("jump", true);
+                this.body.anims.stop();
+                this.body.anims.play("jump", true);
                 this.sound.play("jumpEffect");
                 
             }
         };
-
-        if (keyAttack.isDown && this.canShoot && this.bombCount > 0){
+        // && this.bombCount > 0
+        if (keyAttack.isDown && this.canShoot){
             
             if (this.body.flipX){
                 this.bombVelocity = -200
@@ -268,6 +339,30 @@ class Play extends Phaser.Scene {
                 
             });
 
+            this.physics.add.collider(bomb, this.boss, (bomb, boss) => {
+                this.bossHealth -= 1
+                bomb.destroy();
+
+                //this.score += 50
+                //particle effects
+                const emitter = this.add.particles(boss.x, boss.y, 'bomb', {
+
+                    lifespan: 400,
+                    speed: { min: 150, max: 250 },
+                    scale: { start: 0.8, end: 0 },
+                    blendMode: 'ADD',
+                    emitting: false
+                });
+                emitter.explode(16);
+                
+            });
+
+        }
+
+        if (this.bossHealth === 0){
+            this.boss.destroy();
+            this.score += 500
+            this.bossHealth -= 1
         }
 
         
@@ -279,7 +374,7 @@ class Play extends Phaser.Scene {
         if (keyLeft.isDown) {
             this.body.setVelocityX(this.moveSpeed * 100)
             if (this.body.body.touching.down){
-                //this.body.anims.play("walk", true);
+                this.body.anims.play("walk", true);
             }
               
             this.body.flipX = true;  
@@ -287,7 +382,7 @@ class Play extends Phaser.Scene {
         else if (keyRight.isDown ) {
             this.body.setVelocityX(-this.moveSpeed * 100)
             if (this.body.body.touching.down){
-                //this.body.anims.play("walk", true);
+                this.body.anims.play("walk", true);
             }
              
             this.body.flipX = false;  
@@ -298,9 +393,9 @@ class Play extends Phaser.Scene {
             
         }
 
-        // if (!keyRight.isDown && !keyLeft.isDown && this.body.body.touching.down){
-        //     this.body.anims.play("idle", true);
-        // }
+        if (!keyRight.isDown && !keyLeft.isDown && this.body.body.touching.down){
+            this.body.anims.play("idle", true);
+        }
 
 
 
@@ -336,6 +431,11 @@ class Play extends Phaser.Scene {
         } else if (this.enemy3.x > this.pointB3 && this.enemy3.body.velocity.x > 0) {
             this.enemy3.setVelocityX(this.enemySpeed * 100);
         }
+        if (this.enemy4.x < this.pointA4 && this.enemy4.body.velocity.x < 0) {
+            this.enemy4.setVelocityX(-this.enemySpeed * 100);
+        } else if (this.enemy4.x > this.pointB4 && this.enemy4.body.velocity.x > 0) {
+            this.enemy4.setVelocityX(this.enemySpeed * 100);
+        }
 
         
 
@@ -360,7 +460,7 @@ class Play extends Phaser.Scene {
             //console.log(this.clock)
         }
 
-        if(this.body.y > game.config.height * 3 / 2){
+        if(this.body.y > game.config.height * 2){
             this.music.stop();
             this.scene.restart();
         }
