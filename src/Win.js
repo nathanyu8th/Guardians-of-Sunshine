@@ -6,14 +6,16 @@ class Win extends Phaser.Scene {
             
     }
 
-    preload(){
-            
+    init(){
+
+        let playScene = this.scene.get("playScene");
+        this.finalScore =  playScene.score     
     }
 
     create(){
         let winConfig = {
             fontFamily: "bold Courier",
-            fontSize: "100px",
+            fontSize: "80px",
             //backgroundColor: "lightgreen",
             color: "lightgreen",
             align: "right",
@@ -24,9 +26,17 @@ class Win extends Phaser.Scene {
 
         this.add.text(
             width/2,
-            height/2,
+            height/4,
             "YOU WIN!",
             winConfig
+        
+        ).setOrigin(0.5)
+
+        this.add.text(
+            width/2,
+            height - height / 4,
+            this.finalScore,
+            winConfig   
         
         ).setOrigin(0.5)
 

@@ -5,7 +5,7 @@ class Play extends Phaser.Scene {
 
     init() {
         // useful variables
-        this.moveSpeed = -5;
+        this.moveSpeed = -2;
         this.enemySpeed = -1.5;
         this.jumpPower = 0;
         this.gravityForce = 1200;
