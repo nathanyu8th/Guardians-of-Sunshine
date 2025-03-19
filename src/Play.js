@@ -303,7 +303,7 @@ class Play extends Phaser.Scene {
         this.endFlag = this.physics.add.sprite(width * 5, height - height/3 + 50, "flag").setImmovable().setScale(3)
     
         this.physics.add.collider(this.body, this.endFlag, (body, flag) => {
-            
+            this.music.stop()
             this.scene.start("winScene");
             
         });
