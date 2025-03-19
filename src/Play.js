@@ -68,9 +68,11 @@ class Play extends Phaser.Scene {
         this.item7 = this.physics.add.sprite(width * 3 + 800, height / 2 - 50, "bomb").setScale(0.5)
         this.item8 = this.physics.add.sprite(width * 3 + 800 + 50, height / 2 - 50, "bomb").setScale(0.5)
         this.item9 = this.physics.add.sprite(width * 3 + 300, height * 3 / 2 + 50, "bomb").setScale(0.5)
+        this.item10 = this.physics.add.sprite(width * 3 + 800 + 150, height / 2 - 50, "bomb").setScale(0.5)
+        this.item11 = this.physics.add.sprite(width * 3 + 800 + 100, height / 2 - 50, "bomb").setScale(0.5)
 
 
-        this.items = this.add.group([this.item1, this.item2, this.item3, this.item4, this.item5, this.item6, this.item7, this.item8, this.item9]);
+        this.items = this.add.group([this.item1, this.item2, this.item3, this.item4, this.item5, this.item6, this.item7, this.item8, this.item9, this.item10, this.item11]);
         
 
         //enemy
@@ -387,6 +389,23 @@ class Play extends Phaser.Scene {
                 //this.score += 50
                 //particle effects
                 const emitter = this.add.particles(boss.x, boss.y, 'bomb', {
+
+                    lifespan: 400,
+                    speed: { min: 150, max: 250 },
+                    scale: { start: 0.8, end: 0 },
+                    blendMode: 'ADD',
+                    emitting: false
+                });
+                emitter.explode(16);
+                
+            });
+            this.physics.add.collider(bomb, this.bullets, (bomb, bullet) => {
+                bomb.destroy();
+                bullet.destroy();
+
+                //this.score += 50
+                //particle effects
+                const emitter = this.add.particles(bomb.x, bomb.y, 'bullet', {
 
                     lifespan: 400,
                     speed: { min: 150, max: 250 },

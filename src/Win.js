@@ -47,7 +47,7 @@ class Win extends Phaser.Scene {
 
     update(){
         if (Phaser.Input.Keyboard.JustDown(keyQuit)) {
-            this.music.stop();
+            //this.music.stop();
             this.scene.start("menuScene");
             
         }
