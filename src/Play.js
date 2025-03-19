@@ -5,7 +5,7 @@ class Play extends Phaser.Scene {
 
     init() {
         // useful variables
-        this.moveSpeed = -2;
+        this.moveSpeed = -5;
         this.enemySpeed = -1.5;
         this.jumpPower = 0;
         this.gravityForce = 1200;
@@ -61,9 +61,9 @@ class Play extends Phaser.Scene {
 
         this.item4 = this.physics.add.sprite(width / 2, height - height/ 4 - 100, "bomb").setScale(0.5)
         this.item1 = this.physics.add.sprite(width - width / 4, height - height/ 4 + 50, "bomb").setScale(0.5)
-        this.item2 = this.physics.add.sprite(width, height * 3 / 2 - 50, "bomb").setScale(0.5)
+        this.item2 = this.physics.add.sprite(width, height * 3 / 2 + 50, "bomb").setScale(0.5)
         this.item3 = this.physics.add.sprite(width * 3 / 2 - 50, height - height/2, "bomb").setScale(0.5)
-        this.item5 = this.physics.add.sprite(width + 100, height * 3 / 2 - 50, "bomb").setScale(0.5)
+        this.item5 = this.physics.add.sprite(width + 100, height * 3 / 2 + 50, "bomb").setScale(0.5)
         this.item6 = this.physics.add.sprite(width * 3 + 800 - 50, height / 2 - 50, "bomb").setScale(0.5)
         this.item7 = this.physics.add.sprite(width * 3 + 800, height / 2 - 50, "bomb").setScale(0.5)
         this.item8 = this.physics.add.sprite(width * 3 + 800 + 50, height / 2 - 50, "bomb").setScale(0.5)
@@ -83,7 +83,7 @@ class Play extends Phaser.Scene {
         this.enemy3 = this.physics.add.sprite(width * 5 / 2, height - height/5, "enemy").setVelocityX(-this.moveSpeed * 100);
         this.pointA3 = this.enemy3.x
         this.pointB3 = this.enemy3.x + this.enemyRange
-        this.enemy4 = this.physics.add.sprite(width * 3 / 2 + 100, height * 3 / 2 - 50, "enemy").setVelocityX(-this.moveSpeed * 100);
+        this.enemy4 = this.physics.add.sprite(width * 3 / 2 + 100, height * 3 / 2 + 50, "enemy").setVelocityX(-this.moveSpeed * 100);
         this.pointA4 = this.enemy4.x
         this.pointB4 = this.enemy4.x + this.enemyRange
         this.enemy5 = this.physics.add.sprite(width * 3 + 400, height - height / 6 - 50, "enemy").setVelocityX(-this.moveSpeed * 100);
@@ -119,7 +119,7 @@ class Play extends Phaser.Scene {
         this.ground8 = this.physics.add.sprite(width * 2 + 300, height - height / 4, "ground").setImmovable().setScale(0.5, 1)
         this.ground9 = this.physics.add.sprite(width * 3 , height / 4 - 50, "ground").setImmovable().setScale(33, 9).setFlipY(true)
         this.ground10 = this.physics.add.sprite(width * 3 - 400 , height , "ground").setImmovable().setScale(4, 7)
-        this.ground11 = this.physics.add.sprite(width * 3 / 2 , height * 3 / 2 , "ground").setImmovable().setScale(7, 1)
+        this.ground11 = this.physics.add.sprite(width * 3 / 2 , height * 3 / 2 + 100, "ground").setImmovable().setScale(7, 1)
         this.ground12 = this.physics.add.sprite(width * 3 + 200, height, "ground").setImmovable().setScale(0.5, 1)
         this.ground13 = this.physics.add.sprite(width * 3 + 400, height - height / 6, "ground").setImmovable().setScale(0.5, 1)
         this.ground14 = this.physics.add.sprite(width * 3 + 300, height - height/3, "ground").setImmovable().setScale(0.5, 1)
@@ -179,13 +179,13 @@ class Play extends Phaser.Scene {
 
 
         //teleporter
-        this.teleport = this.physics.add.sprite(width * 2, height * 3 / 2 - 50, "teleport").setImmovable()
-        this.teleport2 = this.physics.add.sprite(width * 3 + 300 + 170, height * 3 / 2 + 50, "teleport").setImmovable()
+        this.teleport = this.physics.add.sprite(width * 2, height * 3 / 2 + 50, "teleport").setImmovable()
+        this.teleport2 = this.physics.add.sprite(width * 3 + 300 + 180, height * 3 / 2 + 50, "teleport").setImmovable()
 
         this.teleports = this.add.group([this.teleport, this.teleport2])
         
         this.physics.add.collider(this.body, this.teleports, (body, teleport) => {
-            body.y -= height;
+            body.y -= height + 100;
         })
         
 
