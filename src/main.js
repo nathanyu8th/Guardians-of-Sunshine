@@ -9,7 +9,8 @@
  * Title: Guardians of Sunshine
  * Hours: 25 hours
  * 
- * 
+ * Utilized particle systems, game timers, physics systems, cameras, and text objects.
+ * Maybe you may have missed it on your first playthrough, but you can drop from platforms and there will be a secret platform for the player.
  * 
  */
 
