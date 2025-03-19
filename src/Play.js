@@ -44,10 +44,7 @@ class Play extends Phaser.Scene {
         this.music.play();
 
 
-        // add background grass
-        //this.background = this.add.image(0, 0, "bgPlay").setOrigin(0);
-
-        //this.background = this.add.tileSprite(0,0, game.config.width, game.config.height, "bgPlay").setOrigin(0, 0);
+        
         this.background = this.physics.add.sprite(0,0, "background").setOrigin(0, 0);
         this.background = this.physics.add.sprite(2388,0, "background").setOrigin(0, 0);
         this.background = this.physics.add.sprite(2388 * 2,0, "background").setOrigin(0, 0);
@@ -243,7 +240,6 @@ class Play extends Phaser.Scene {
             color: "#843605",
             align: "right",
             padding: 5
-            //fixedWidth: 100,
         };
 
         this.attackLeft = this.add.text(
@@ -349,7 +345,7 @@ class Play extends Phaser.Scene {
                 
             }
         };
-        // && this.bombCount > 0
+        
         if (keyAttack.isDown && this.canShoot && this.bombCount > 0){
             
             if (this.body.flipX){
@@ -386,8 +382,7 @@ class Play extends Phaser.Scene {
                 this.bossHealth -= 1
                 bomb.destroy();
 
-                //this.score += 50
-                //particle effects
+                
                 const emitter = this.add.particles(boss.x, boss.y, 'bomb', {
 
                     lifespan: 400,
@@ -403,8 +398,7 @@ class Play extends Phaser.Scene {
                 bomb.destroy();
                 bullet.destroy();
 
-                //this.score += 50
-                //particle effects
+                
                 const emitter = this.add.particles(bomb.x, bomb.y, 'bullet', {
 
                     lifespan: 400,
@@ -428,9 +422,7 @@ class Play extends Phaser.Scene {
 
         
 
-        if (!this.body.body.touching.down){
-            //this.body.anims.stop()
-        }
+        
 
         if (keyLeft.isDown) {
             this.body.setVelocityX(this.moveSpeed * 100)
@@ -524,7 +516,7 @@ class Play extends Phaser.Scene {
         }
         else{
             this.attackLeft.text = "Cooldown: " + (100 - this.clock.elapsed / 10).toFixed(0) + "ms"
-            //console.log(this.clock)
+           
         }
 
         if(this.body.y > game.config.height * 2){

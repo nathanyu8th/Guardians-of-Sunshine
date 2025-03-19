@@ -5,15 +5,15 @@ class Menu extends Phaser.Scene {
 
     preload(){
         this.load.path = "./assets/img/";
-        //this.load.image("fire", "fire.png");
+        
         this.load.image("bomb", "bomb.png");
         this.load.image("bullet", "Bullet.png");
         this.load.image("enemy", "enemy.png")
         this.load.image("boss", "Boss.png")
         this.load.image("ground", "GreenPlatform.png");
-        //this.load.image("wall", "Platform.png");
+        
         this.load.image("title", "GuardiansTitle.png");
-        //this.load.image("bgWar", "bgWar.png");
+        
         this.load.image("background", "background.png");
         this.load.image("mainCharacter", "character.png");
         this.load.image("flag", "EndFlag.png");
@@ -65,14 +65,7 @@ class Menu extends Phaser.Scene {
 
         this.background = this.add.image(0, 0, "title").setOrigin(0);
 
-        // this.add
-        //     .text(
-        //         game.config.width / 2,
-        //         game.config.height / 2,
-        //         "Guardians of Sunshine",
-        //         menuConfig
-        //     )
-        //     .setOrigin(0.5);
+        
 
         this.add
             .text(
