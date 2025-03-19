@@ -26,7 +26,7 @@ let config = {
         }
     },
     pixelArt: true,
-    scene: [ Menu, Play ]
+    scene: [ Menu, Play, Win ]
 }
 
 let keyPlay, keyRight, keyLeft, keyJump, keyQuit, keyAttack;

@@ -18,6 +18,7 @@ class Menu extends Phaser.Scene {
         this.load.image("mainCharacter", "character.png");
         this.load.image("flag", "EndFlag.png");
         this.load.image("coin", "Coin.png")
+        this.load.image("teleport", "Teleporter.png")
 
         this.load.spritesheet("character", "CharacterAnim.png", {
             frameWidth: 64,
@@ -35,14 +36,16 @@ class Menu extends Phaser.Scene {
 
     create(){
         let menuConfig = {
-            fontFamily: "Courier",
+            fontFamily: "bold Courier",
             fontSize: "24px",
-            backgroundColor: "lightgreen",
-            color: "black",
-            align: "right",
+            backgroundColor: "green",
+            color: "lightgreen",
+            align: "left",
             padding: {
                 top: 5,
                 bottom: 5,
+                left: 2,
+                right: 2,
             },
             fixedWidth: 0,
         };
@@ -62,28 +65,28 @@ class Menu extends Phaser.Scene {
 
         this.background = this.add.image(0, 0, "title").setOrigin(0);
 
-        this.add
-            .text(
-                game.config.width / 2,
-                game.config.height / 2,
-                "Guardians of Sunshine",
-                menuConfig
-            )
-            .setOrigin(0.5);
+        // this.add
+        //     .text(
+        //         game.config.width / 2,
+        //         game.config.height / 2,
+        //         "Guardians of Sunshine",
+        //         menuConfig
+        //     )
+        //     .setOrigin(0.5);
 
         this.add
             .text(
-                game.config.width / 2,
+                game.config.width / 8,
                 game.config.height  - this.game.config.height /4,
-                "Press P to Start, Press Z to Jump, Press Q to Quit, Press X to Shoot Bombs",
+                "P: Play\nZ: Jump\nQ: Quit\nX: Shoot",
                 menuConfig
             )
             .setOrigin(0.5);
 
             this.add
             .text(
-                game.config.width / 2,
-                game.config.height  - this.game.config.height /3,
+                game.config.width / 8 + 78,
+                game.config.height  - this.game.config.height /2.5,
                 "Use Arrow Keys to Move",
                 menuConfig
             )
@@ -91,8 +94,8 @@ class Menu extends Phaser.Scene {
 
             this.add
             .text(
-                game.config.width / 2,
-                game.config.height  - this.game.config.height /10,
+                game.config.width * 3 / 5 + 60,
+                game.config.height  - this.game.config.height /15,
                 "Nathan Yu: Game Programmer/ Artist\nArt Software: Piskel\nAudio: Royalty Free",
                 menu2Config
             )
